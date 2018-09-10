@@ -1,5 +1,3 @@
-
-var socket;
 var ghost1;
 var ghost2;
 var ghost3;

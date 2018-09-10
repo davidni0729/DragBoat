@@ -1,9 +1,3 @@
-// ITP Networked Media, Fall 2014
-// https://github.com/shiffman/itp-networked-media
-// Daniel Shiffman
-
-// Keep track of our socket connection
-var socket;
 var btnWidth;
 var btn1Color;
 var btn1OverlayAlpha;
@@ -17,10 +11,13 @@ var btn3x;
 var btn4Color;
 var btn4OverlayAlpha;
 var btn4x;
+var ptouchIsDown;
+var pmouseIsPressed;
 
 
 
 function setup() {
+  // uncomment this line to make the canvas the full size of the window
   createCanvas(windowWidth, windowHeight);
   background(0);
 
@@ -38,6 +35,10 @@ function setup() {
   btn4OverlayAlpha = 0;
   btn4x = btnWidth * 3;
 
+  strokeWeight(5);
+  stroke(0);
+  ptouchIsDown = touchIsDown;
+  pmouseIsPressed = mouseIsPressed;
 }
 
 function draw() {
@@ -49,68 +50,119 @@ function draw() {
   if(btn4OverlayAlpha > 0) btn4OverlayAlpha -= 20;
 
 
-  fill(btn1Color);
-  rect(btn1x, 0, btnWidth, windowHeight);
-  fill(255,255,255,btn1OverlayAlpha);
-  rect(btn1x, 0, btnWidth, windowHeight);
+  // fill(btn1Color);
+  // rect(btn1x, 0, btnWidth, windowHeight);
+  // fill(255,255,255,btn1OverlayAlpha);
+  // rect(btn1x, 0, btnWidth, windowHeight);
 
 
-  fill(btn2Color);
-  rect(btn2x, 0, btnWidth, windowHeight);
-  fill(255,255,255,btn2OverlayAlpha);
-  rect(btn2x, 0, btnWidth, windowHeight);
+  // fill(btn2Color);
+  // rect(btn2x, 0, btnWidth, windowHeight);
+  // fill(255,255,255,btn2OverlayAlpha);
+  // rect(btn2x, 0, btnWidth, windowHeight);
   
-  fill(btn3Color);
-  rect(btn3x, 0, btnWidth, windowHeight);
-  fill(255,255,255,btn3OverlayAlpha);
-  rect(btn3x, 0, btnWidth, windowHeight);
+  // fill(btn3Color);
+  // rect(btn3x, 0, btnWidth, windowHeight);
+  // fill(255,255,255,btn3OverlayAlpha);
+  // rect(btn3x, 0, btnWidth, windowHeight);
 
-  fill(btn4Color);
-  rect(btn4x, 0, btnWidth, windowHeight);
-  fill(255,255,255,btn4OverlayAlpha);
-  rect(btn4x, 0, btnWidth, windowHeight);
+  // fill(btn4Color);
+  // rect(btn4x, 0, btnWidth, windowHeight);
+  // fill(255,255,255,btn4OverlayAlpha);
+  // rect(btn4x, 0, btnWidth, windowHeight);
 
+  if (ptouchIsDown && touchIsDown){
+    stroke(255, 0, 0);
+    line(touchX, touchY, ptouchX, ptouchY);
+    var distance;
+    distance = dist(mouseX, mouseY, pmouseX, pmouseY);
+    console.log(distance);
+    if(distance > 15) {
+      var data = {
+                btn1: true,
+                btn2: false,
+                btn3: false,
+                btn4: false
+              };
+      socket.emit('button',data);
+    }
+  }
+  if (pmouseIsPressed && mouseIsPressed){
+    var distance;
+    distance = dist(mouseX, mouseY, pmouseX, pmouseY);
+    console.log(distance);
+    if(distance > 15) {
+      var data = {
+                btn1: false,
+                btn2: true,
+                btn3: false,
+                btn4: false
+              };
+      socket.emit('button',data);
+    }
+    stroke(0, 0, 255);
+    line(mouseX, mouseY, pmouseX, pmouseY);
+  }
+  ptouchIsDown = touchIsDown;
+  pmouseIsPressed = mouseIsPressed;
+}
+
+function touchMoved(){
+  //stroke(255, 0, 0);
+  //line(touchX, touchY, ptouchX, ptouchY);
+  return false;
+}
+
+function touchEnded(){
+  //stroke(0, 0, 255);
+  //line(touchX, touchY, ptouchX, ptouchY);
+  return false;
+}
+
+function mouseDragged(){
+  //stroke(0, 255, 0);
+  //line(mouseX, mouseY, pmouseX, pmouseY);
 }
 
 
-function mousePressed() {
-  // if(event.type == 'mousedown'){
+// function mousePressed() {
+//   // if(event.type == 'mousedown'){
 
-    var data = {
-        btn1: false,
-        btn2: false,
-        btn3: false,
-        btn4: false
-      };
+//     var data = {
+//         btn1: false,
+//         btn2: false,
+//         btn3: false,
+//         btn4: false
+//       };
 
-      if(mouseX>=0 && mouseX<btnWidth){
-        btn1OverlayAlpha = 255;
-        data.btn1 = true;
-        console.log("data:", data);
-        socket.emit('button',data);
-      }
+//       if(mouseX>=0 && mouseX<btnWidth){
+//         btn1OverlayAlpha = 255;
+//         data.btn1 = true;
+//         console.log("data:", data);
+//         socket.emit('button',data);
+//       }
 
-      if(mouseX>=btnWidth && mouseX<btnWidth*2){
-        btn2OverlayAlpha = 255;
-        data.btn2 = true;
-        console.log("data:", data);
-        socket.emit('button',data);
-      }
+//       if(mouseX>=btnWidth && mouseX<btnWidth*2){
+//         btn2OverlayAlpha = 255;
+//         data.btn2 = true;
+//         console.log("data:", data);
+//         socket.emit('button',data);
+//       }
 
-      if(mouseX>=btnWidth*2 && mouseX<btnWidth*3){
-        btn3OverlayAlpha = 255;
-        data.btn3 = true;
-        console.log("data:", data);
-        socket.emit('button',data);
-      }
+//       if(mouseX>=btnWidth*2 && mouseX<btnWidth*3){
+//         btn3OverlayAlpha = 255;
+//         data.btn3 = true;
+//         console.log("data:", data);
+//         socket.emit('button',data);
+//       }
       
-      if(mouseX>=btnWidth*3 && mouseX<btnWidth*4){
-        btn4OverlayAlpha = 255;
-        data.btn4 = true;
-        console.log("data:", data);
-        socket.emit('button',data);
-      }
+//       if(mouseX>=btnWidth*3 && mouseX<btnWidth*4){
+//         btn4OverlayAlpha = 255;
+//         data.btn4 = true;
+//         console.log("data:", data);
+//         socket.emit('button',data);
+//       }
 
-  // }
+//   // }
 
-}
+// }
