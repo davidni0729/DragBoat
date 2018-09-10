@@ -13,19 +13,19 @@ function setup() {
 createCanvas(windowWidth, windowHeight);
 
   ghost1 = createSprite(100, 80);
-  ghost1.addAnimation('normal', 'assets/ghost_spin0001.png', 'assets/ghost_spin0003.png');
+  ghost1.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
   ghost1.mouseActive = true;
 
   ghost2 = createSprite(100, 280);
-  ghost2.addAnimation('normal', 'assets/ghost_spin0001.png', 'assets/ghost_spin0003.png');
+  ghost2.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
   ghost2.mouseActive = true;
 
   ghost3 = createSprite(100, 480);
-  ghost3.addAnimation('normal', 'assets/ghost_spin0001.png', 'assets/ghost_spin0003.png');
+  ghost3.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
   ghost3.mouseActive = true;
 
   ghost4 = createSprite(100, 680);
-  ghost4.addAnimation('normal', 'assets/ghost_spin0001.png', 'assets/ghost_spin0003.png');
+  ghost4.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
   ghost4.mouseActive = true;
 
   // We make a named event called 'mouse' and write an
@@ -37,7 +37,7 @@ createCanvas(windowWidth, windowHeight);
       
         if(data.btn1) {
           ghost1.rotation-= 10;
-          velocity1 +=2;
+          velocity1 +=1;
           ghost1.setSpeed(velocity1, direction);
         }
           
