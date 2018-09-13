@@ -12,21 +12,13 @@ function setup() {
   
 createCanvas(windowWidth, windowHeight);
 
-  ghost1 = createSprite(100, 80);
+  ghost1 = createSprite(100, 200);
   ghost1.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
   ghost1.mouseActive = true;
 
-  ghost2 = createSprite(100, 280);
+  ghost2 = createSprite(100, 600);
   ghost2.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
   ghost2.mouseActive = true;
-
-  ghost3 = createSprite(100, 480);
-  ghost3.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
-  ghost3.mouseActive = true;
-
-  ghost4 = createSprite(100, 680);
-  ghost4.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
-  ghost4.mouseActive = true;
 
   // We make a named event called 'mouse' and write an
   // anonymous callback function
@@ -36,14 +28,12 @@ createCanvas(windowWidth, windowHeight);
       console.log("Got: " + data.btn1 + " " + data.btn2 + " " + data.btn3 + " " + data.btn4 + " " );
       
         if(data.btn1) {
-          ghost1.rotation-= 10;
-          velocity1 +=1;
+          velocity1 += acceleration;
           ghost1.setSpeed(velocity1, direction);
         }
           
         if(data.btn2) {
-          ghost2.rotation-= 10;
-          velocity2 +=1;
+          velocity2 += acceleration;
           ghost2.setSpeed(velocity2, direction);
         }
 
@@ -54,7 +44,7 @@ createCanvas(windowWidth, windowHeight);
 
 function draw() {
   
-  background(255, 255, 255);
+  background(0);
 
   if (draggedSprite != null) {
     draggedSprite.position.x = mouseX;
@@ -63,14 +53,19 @@ function draw() {
 
   //draw the ghosts
     drawSprites();
+    if(frameCount%resistanceRate == 0) {
+      if(velocity1 > 0) {
+        velocity1 -= resistance;
+        if(velocity1<0)velocity1=0;
+        ghost1.setSpeed(velocity1, direction);
+      }
+      if(velocity2 > 0) {
+        velocity2 -= resistance;
+        if(velocity2<0)velocity2=0;
+        ghost2.setSpeed(velocity2, direction);
+      }
+      console.log(velocity1, velocity2);
 
-  if(velocity1 > 0) {
-    velocity1--;
-    ghost1.setSpeed(velocity1, direction);
-  }
-  if(velocity2 > 0) {
-    velocity2--;
-    ghost2.setSpeed(velocity2, direction);
-  }
-  console.log(velocity1, velocity2);
+    }
+  
 }

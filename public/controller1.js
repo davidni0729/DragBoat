@@ -1,69 +1,46 @@
-var ptouchIsDown;
-var pmouseIsPressed;
+// prevent scrolling of page
+document.ontouchmove = function(event) {
+  event.preventDefault();
+}
+var startX;
+var startY;
+var endX;
+var endY;
+var touchDist;
 
 function setup() {
   // uncomment this line to make the canvas the full size of the window
   createCanvas(windowWidth, windowHeight);
   background(0);
-
   strokeWeight(5);
   stroke(0);
-  ptouchIsDown = touchIsDown;
-  pmouseIsPressed = mouseIsPressed;
 }
 
 function draw() {
-  background(0);
-
-  if (ptouchIsDown && touchIsDown){
-    stroke(255, 0, 0);
-    line(touchX, touchY, ptouchX, ptouchY);
-    var distance;
-    distance = dist(mouseX, mouseY, pmouseX, pmouseY);
-    console.log(distance);
-    if(distance > 15) {
-      var data = {
-                btn1: true,
-                btn2: false,
-                btn3: false,
-                btn4: false
-              };
-      socket.emit('button',data);
-    }
-  }
-  if (pmouseIsPressed && mouseIsPressed){
-    var distance;
-    distance = dist(mouseX, mouseY, pmouseX, pmouseY);
-    console.log(distance);
-    if(distance > 15) {
-      var data = {
-                btn1: true,
-                btn2: false,
-                btn3: false,
-                btn4: false
-              };
-      socket.emit('button',data);
-    }
-    stroke(0, 0, 255);
-    line(mouseX, mouseY, pmouseX, pmouseY);
-  }
-  ptouchIsDown = touchIsDown;
-  pmouseIsPressed = mouseIsPressed;
+  
 }
 
+function touchStarted(){
+  startX = touchX;
+  startY = touchY;
+}
 function touchMoved(){
-  //stroke(255, 0, 0);
-  //line(touchX, touchY, ptouchX, ptouchY);
-  return false;
+  
 }
-
 function touchEnded(){
-  //stroke(0, 0, 255);
-  //line(touchX, touchY, ptouchX, ptouchY);
-  return false;
-}
-
-function mouseDragged(){
-  //stroke(0, 255, 0);
-  //line(mouseX, mouseY, pmouseX, pmouseY);
+  endX = touchX;
+  endY = touchY;
+  touchDist = dist(startX, startY, endX, endY);
+  console.log('touchDist', touchDist, startX, startY, endX, endY);
+  if(touchDist > 100) {
+    stroke(0, 0, 255);
+    line(startX, startY, endX, endY);
+    var data = {
+      btn1: true,
+      btn2: false,
+      btn3: false,
+      btn4: false
+    };
+    socket.emit('button',data);
+  }
 }
