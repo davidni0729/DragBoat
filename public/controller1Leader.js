@@ -7,17 +7,27 @@ var startY;
 var endX;
 var endY;
 var touchDist;
+var btnReady;
 
 function setup() {
   // uncomment this line to make the canvas the full size of the window
   createCanvas(windowWidth, windowHeight);
+  btnReady = createSprite(100, 200);
+  btnReady.addAnimation('normal', 'assets/boat1.png', 'assets/boat3.png');
+  btnReady.mouseActive = true;
+  btnReady.onMouseReleased = function() {
+    btnReady.visible = true;
+  };
   background(0);
   strokeWeight(5);
   stroke(0);
+
 }
 
 function draw() {
-  
+  background(0);
+  //draw the btn
+  drawSprites();
 }
 
 function touchStarted(){
@@ -36,10 +46,7 @@ function touchEnded(){
     stroke(0, 0, 255);
     line(startX, startY, endX, endY);
     var data = {
-      btn1: true,
-      btn2: false,
-      btn3: false,
-      btn4: false
+      btn1a: true,
     };
     socket.emit('button',data);
   }
