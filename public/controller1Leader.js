@@ -27,7 +27,7 @@ function setup() {
 function draw() {
   background(0);
   //draw the btn
-  drawSprites();
+  // drawSprites();
 }
 
 function touchStarted(){
@@ -42,11 +42,11 @@ function touchEnded(){
   endY = touchY;
   touchDist = dist(startX, startY, endX, endY);
   console.log('touchDist', touchDist, startX, startY, endX, endY);
-  if(touchDist > 100) {
+  if(touchDist >= 0) {
     stroke(0, 0, 255);
     line(startX, startY, endX, endY);
     var data = {
-      btn1a: true,
+      btn1Leader: true,
     };
     socket.emit('button',data);
   }

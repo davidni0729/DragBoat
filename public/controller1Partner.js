@@ -36,7 +36,7 @@ function touchEnded(){
     stroke(0, 0, 255);
     line(startX, startY, endX, endY);
     var data = {
-      btn1b: true,
+      btn1Partner: true,
     };
     socket.emit('button',data);
   }
